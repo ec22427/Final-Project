@@ -17,10 +17,22 @@ print(df['peak_chart'].unique())  # Check unique values in the 'peak_chart' colu
 
 # Visualize distribution of peak chart positions
 plt.figure(figsize=(12, 6))
-sns.boxplot(x='Artist', y='peak_chart', data=df , color="magenta")
+sns.boxplot(x='Artist', y='peak_chart', data=df , palette='husl')
 plt.title('Distribution of Peak Chart Positions by Artist')
 plt.xlabel('Artist')
 plt.ylabel('Peak Chart Position')
 plt.show()
+
+# Calculate total sales for each artist
+total_sales = df.groupby('Artist')['sales'].sum().reset_index()
+
+# Visualize sales comparison
+plt.figure(figsize=(15, 6))
+sns.barplot(x='Artist', y='sales', data=total_sales, palette='magma')
+plt.title('Total Sales Comparison by Artist')
+plt.xlabel('Artist')
+plt.ylabel('Total Sales')
+plt.show()
+
 
 
