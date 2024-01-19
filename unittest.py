@@ -19,9 +19,18 @@ class TestKpopChartsAndSales(unittest.TestCase):
         
     def test_display_basic_info(self):
         # Ensure that the function doesn't raise any exceptions
-            try:
-                display_basic_info(self.df)
-            except Exception as e:
-                self.fail(f"display_basic_info raised an exception: {str(e)}")
+        try:
+            display_basic_info(self.df)
+        except Exception as e:
+            self.fail(f"display_basic_info raised an exception: {str(e)}")
+            
+    def test_visualise_peak_chart(self):
+        # Ensure that the function doesn't raise any exceptions
+        try:
+            visualise_peak_chart(self.df)
+        except Exception as e:
+            self.fail(f"visualise_peak_chart raised an exception: {str(e)}")
+
+
 
 
