@@ -18,7 +18,7 @@ def display_basic_info(dataframe):
     print(dataframe['sales'].unique())  # Check unique values in the 'sales' column
     print(dataframe['peak_chart'].unique())  # Check unique values in the 'peak_chart' column
 
-def visualize_peak_chart(dataframe):
+def visualise_peak_chart(dataframe):
     # Visualise distribution of peak chart positions
     plt.figure(figsize=(12, 6))
     sns.boxplot(x='Artist', y='peak_chart', data=dataframe, palette='husl')
@@ -27,7 +27,7 @@ def visualize_peak_chart(dataframe):
     plt.ylabel('Peak Chart Position')
     plt.show()
 
-def calculate_and_visualize_total_sales(dataframe):
+def calculate_and_visualise_total_sales(dataframe):
     # Calculate total sales for each artist
     total_sales = dataframe.groupby('Artist')['sales'].sum().reset_index()
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     display_basic_info(df)
 
     # Visualise distribution of peak chart positions
-    visualize_peak_chart(df)
+    visualise_peak_chart(df)
 
     # Calculate and visualise total sales
-    calculate_and_visualize_total_sales(df)
+    calculate_and_visualise_total_sales(df)
