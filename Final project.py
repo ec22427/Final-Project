@@ -31,7 +31,11 @@ def plot_sales_by_country_bar(df):
     sns.barplot(x='Artist', y='JPN', data=sales_by_country, color='cyan', label='Japan')
     plt.title('Sales in Korea and Japan by Artist')
     plt.xlabel('Artist')
-    plt.ylabel('Total Sales')
+    plt.ylabel('Total Sales (in thousands)')  # Update y-axis label
+
+    # Format y-axis ticks to show values in thousands
+    plt.gca().yaxis.set_major_formatter(FuncFormatter(lambda x, _: '{:.0f}K'.format(x/1000)))
+
     plt.legend()
     plt.xticks(rotation=90)
     plt.show()
@@ -52,6 +56,19 @@ def plot_total_sales_with_fit_line(df):
 
     plt.show()
 
+def plot_mean_chart_position_bar(df):
+    # Group by artist and calculate the mean chart position
+    mean_chart_position = df.groupby('Artist')['peak_chart'].mean().reset_index()
+
+    # Create a bar graph
+    plt.figure(figsize=(14, 6))
+    sns.barplot(x='Artist', y='peak_chart', data=mean_chart_position, color='lime')
+    plt.title('Bar Graph of Mean Chart Position by Artist')
+    plt.xlabel('Artist')
+    plt.ylabel('Mean Chart Position')
+    plt.xticks(rotation=90)
+    plt.show()
+
 # Load and clean the data
 df = pd.read_csv('Kpop 4th gen Sales - Sheet1.csv')  
 df = load_and_clean_data(df)
@@ -60,3 +77,4 @@ df = load_and_clean_data(df)
 plot_peak_chart_bar(df)
 plot_sales_by_country_bar(df)
 plot_total_sales_with_fit_line(df)
+plot_mean_chart_position_bar(df)
