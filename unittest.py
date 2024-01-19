@@ -23,13 +23,23 @@ class TestKpopChartsAndSales(unittest.TestCase):
             display_basic_info(self.df)
         except Exception as e:
             self.fail(f"display_basic_info raised an exception: {str(e)}")
-            
+
     def test_visualise_peak_chart(self):
         # Ensure that the function doesn't raise any exceptions
         try:
             visualise_peak_chart(self.df)
         except Exception as e:
             self.fail(f"visualise_peak_chart raised an exception: {str(e)}")
+    
+    def test_calculate_and_visualise_total_sales(self):
+        # Ensure that the function doesn't raise any exceptions
+        try:
+            calculate_and_visualise_total_sales(self.df)
+        except Exception as e:
+            self.fail(f"calculate_and_visualise_total_sales raised an exception: {str(e)}")
+
+if __name__ == '__main__':
+    unittest.main()
 
 
 
