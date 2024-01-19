@@ -21,22 +21,24 @@ def display_basic_info(dataframe):
 def visualise_peak_chart(dataframe):
     # Visualise distribution of peak chart positions
     plt.figure(figsize=(12, 6))
-    sns.boxplot(x='Artist', y='peak_chart', data=dataframe, palette='husl')
+    sns.swarmplot(x='Artist', y='peak_chart', data=dataframe, palette='husl', size=8)
     plt.title('Distribution of Peak Chart Positions by Artist')
     plt.xlabel('Artist')
     plt.ylabel('Peak Chart Position')
+    plt.xticks(rotation=90)
     plt.show()
 
 def calculate_and_visualise_total_sales(dataframe):
     # Calculate total sales for each artist
-    total_sales = dataframe.groupby('Artist')['sales'].sum().reset_index()
+    total_sales = dataframe.groupby(['Artist', 'country'])['sales'].sum().reset_index()
 
     # Visualise sales comparison
     plt.figure(figsize=(15, 6))
-    sns.barplot(x='Artist', y='sales', data=total_sales, palette='magma')
-    plt.title('Total Sales Comparison by Artist')
+    sns.barplot(x='Artist', y='sales', data=total_sales, hue='country', palette='magma')
+    plt.title('Comparison of Sales between Japan and Korea')
     plt.xlabel('Artist')
     plt.ylabel('Total Sales')
+    plt.legend(title='Country', loc='upper right')
     plt.show()
 
 if __name__ == "__main__":
