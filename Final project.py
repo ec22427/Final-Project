@@ -1,82 +1,62 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 
-def load_and_clean_data(file_path):
-    # Load the dataset
-    df = pd.read_csv(file_path)
-
-    # Clean the data (handle missing values, convert data types)
+def load_and_clean_data(df):
+    # Convert the 'sales' column to numeric, as it seems to contain some commas
     df['sales'] = pd.to_numeric(df['sales'].str.replace(',', ''), errors='coerce')
-
     return df
 
-def display_basic_info(dataframe):
-    # Display basic information about the dataset
-    print(dataframe.info())
-    print(dataframe.head())  # Display the first few rows of the DataFrame
-    print(dataframe['sales'].unique())  # Check unique values in the 'sales' column
-    print(dataframe['peak_chart'].unique())  # Check unique values in the 'peak_chart' column
+def plot_peak_chart_bar(df):
+    # Group by artist and aggregate total sales and peak chart position
+    artist_stats = df.groupby('Artist').agg({'sales': 'sum', 'peak_chart': 'mean'}).reset_index()
 
-def visualise_peak_chart(dataframe):
-    # Visualise distribution of peak chart positions
-    plt.figure(figsize=(12, 6))
-    sns.boxplot(x='Artist', y='peak_chart', data=dataframe, palette='husl')
-    plt.title('Distribution of Peak Chart Positions by Artist')
+    # Create a bar graph in magenta
+    plt.figure(figsize=(14, 6))
+    sns.barplot(x='Artist', y='peak_chart', data=artist_stats, color='magenta')
+    plt.title('Bar Graph of Average Peak Chart Position by Artist')
     plt.xlabel('Artist')
-    plt.ylabel('Peak Chart Position')
+    plt.ylabel('Average Peak Chart Position')
     plt.xticks(rotation=90)
     plt.show()
 
-def calculate_and_visualise_total_sales(dataframe):
-    # Filter only 'JPN' and 'KOR' countries
-    dataframe = dataframe[dataframe['country'].isin(['JPN', 'KOR'])]
+def plot_sales_by_country_bar(df):
+    # Group by artist and sum the sales in Japan and Korea separately
+    sales_by_country = df.groupby(['Artist', 'country'])['sales'].sum().unstack().reset_index()
 
-    # Calculate total sales for each artist
-    total_sales = dataframe.groupby(['Artist', 'country'])['sales'].sum().reset_index()
-
-    # Set up separate plots for each graph
-    fig, axes = plt.subplots(3, 1, figsize=(15, 18))
-
-    # Visualise distribution of peak chart positions
-    sns.boxplot(x='Artist', y='peak_chart', data=dataframe, ax=axes[0], palette='husl')
-    axes[0].set_title('Distribution of Peak Chart Positions by Artist')
-    axes[0].set_xlabel('Artist')
-    axes[0].set_ylabel('Peak Chart Position')
-    axes[0].tick_params(axis='x', rotation=90)
-
-    # Box plot for total sales comparison
-    sns.boxplot(x='Artist', y='sales', data=total_sales, hue='country', ax=axes[1], palette='magma', showfliers=False)
-    axes[1].set_title('Sales Comparison (Box Plot)')
-    axes[1].set_xlabel('Artist')
-    axes[1].set_ylabel('Total Sales')
-    axes[1].legend(title='Country')
-    axes[1].tick_params(axis='x', rotation=90)
-
-    # Bar plot for total sales for each group
-    total_sales_general = dataframe.groupby('Artist')['sales'].sum().reset_index()
-    sns.barplot(x='Artist', y='sales', data=total_sales_general, ax=axes[2], palette='viridis')
-    axes[2].set_title('Total Sales for Each Group')
-    axes[2].set_xlabel('Artist')
-    axes[2].set_ylabel('Total Sales')
-    axes[2].tick_params(axis='x', rotation=90)
-
-    # Adjust layout
-    plt.tight_layout()
+    # Create a bar graph
+    plt.figure(figsize=(14, 6))
+    sns.barplot(x='Artist', y='KOR', data=sales_by_country, color='violet', label='Korea')
+    sns.barplot(x='Artist', y='JPN', data=sales_by_country, color='cyan', label='Japan')
+    plt.title('Sales in Korea and Japan by Artist')
+    plt.xlabel('Artist')
+    plt.ylabel('Total Sales')
+    plt.legend()
+    plt.xticks(rotation=90)
     plt.show()
 
-if __name__ == "__main__":
-    # Specify the file path
-    file_path = "Kpop 4th gen Sales - Sheet1.csv"
+def plot_total_sales_with_fit_line(df):
+    # Group by artist and sum the sales
+    total_sales_by_artist = df.groupby('Artist')['sales'].sum().reset_index()
 
-    # Load and clean the data
-    df = load_and_clean_data(file_path)
+    # Create a scatter plot with a line of best fit
+    plt.figure(figsize=(14, 6))
+    sns.regplot(x=total_sales_by_artist.index, y='sales', data=total_sales_by_artist, ci=None, line_kws={"color": "red"})
+    plt.title('Total Sales with Line of Best Fit by Artist')
+    plt.xlabel('Artist Index')  # Change the x-axis label as per your preference
+    plt.ylabel('Total Sales (in thousands)')
 
-    # Display basic information about the dataset
-    display_basic_info(df)
+    # Format y-axis ticks to show values in thousands
+    plt.gca().yaxis.set_major_formatter(FuncFormatter(lambda x, _: '{:.0f}K'.format(x/1000)))
 
-    # Visualise distribution of peak chart positions
-    visualise_peak_chart(df)
+    plt.show()
 
-    # Calculate and visualise total sales
-    calculate_and_visualise_total_sales(df)
+# Load and clean the data
+df = pd.read_csv('Kpop 4th gen Sales - Sheet1.csv')  
+df = load_and_clean_data(df)
+
+# Call each method to plot the graphs
+plot_peak_chart_bar(df)
+plot_sales_by_country_bar(df)
+plot_total_sales_with_fit_line(df)
