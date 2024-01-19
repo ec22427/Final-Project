@@ -1,6 +1,9 @@
 import unittest
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-from io import StringIO
-from unittest.mock import patch
+
+class TestKpopChartsAndSales(unittest.TestCase):
+
+    def setUp(self):
+        # Load and clean the data for testing
+        file_path = "test_dataset.csv"  # Create a smaller test dataset for unit testing
+        self.df = load_and_clean_data(file_path)
