@@ -16,5 +16,12 @@ class TestKpopChartsAndSales(unittest.TestCase):
 
         # Check if 'sales' column contains only numeric values
         self.assertTrue(self.df['sales'].apply(lambda x: pd.to_numeric(x, errors='coerce')).notna().all())
+        
+    def test_display_basic_info(self):
+        # Ensure that the function doesn't raise any exceptions
+            try:
+                display_basic_info(self.df)
+            except Exception as e:
+                self.fail(f"display_basic_info raised an exception: {str(e)}")
 
- 
+
