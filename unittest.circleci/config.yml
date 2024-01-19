@@ -18,8 +18,14 @@ jobs:
             python3 -m pip install --upgrade pip
             python3 -m pip install -r requirements.txt  # Make sure to have a requirements.txt file with your dependencies
             
-            
+
       - run:
           name: Run unittests
           command: |
             python3 -m unittest test_kpop_charts_and_sales.py
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
