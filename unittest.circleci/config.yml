@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Run unittests
           command: |
-            python3 -m unittest test_kpop_charts_and_sales.py
+            python3 -m unittest unittest.py
 
 workflows:
   version: 2
