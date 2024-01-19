@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: circleci/python:3.8  # Choose the Python version you need
 
-      
+
     working_directory: ~/repo
 
     steps:
@@ -17,3 +17,9 @@ jobs:
             sudo apt-get install python3-pip
             python3 -m pip install --upgrade pip
             python3 -m pip install -r requirements.txt  # Make sure to have a requirements.txt file with your dependencies
+            
+            
+      - run:
+          name: Run unittests
+          command: |
+            python3 -m unittest test_kpop_charts_and_sales.py
