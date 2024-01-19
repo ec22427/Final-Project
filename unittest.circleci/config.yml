@@ -4,3 +4,16 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.8  # Choose the Python version you need
+
+      
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get install python3-pip
+            python3 -m pip install --upgrade pip
+            python3 -m pip install -r requirements.txt  # Make sure to have a requirements.txt file with your dependencies
