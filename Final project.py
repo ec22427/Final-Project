@@ -15,5 +15,12 @@ print(df.head())  # Display the first few rows of the DataFrame
 print(df['sales'].unique())  # Check unique values in the 'sales' column
 print(df['peak_chart'].unique())  # Check unique values in the 'peak_chart' column
 
+# Visualize distribution of peak chart positions
+plt.figure(figsize=(12, 6))
+sns.boxplot(x='Artist', y='peak_chart', data=df , color="magenta")
+plt.title('Distribution of Peak Chart Positions by Artist')
+plt.xlabel('Artist')
+plt.ylabel('Peak Chart Position')
+plt.show()
 
 
